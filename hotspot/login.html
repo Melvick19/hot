@@ -1,0 +1,194 @@
+<html>
+<!-- GOOGLE SHEETS APP ID -->
+<!-- AKfycbzZVMCwCJB1DlwKJA8DsuW-wKkMTyyCXye58rpyJw1PpgDeLFxGN7BvQkj2SslbDA8i -->
+<!-- GOOGLE SHEETS APP LINK -->
+<!-- https://script.google.com/macros/s/AKfycbzZVMCwCJB1DlwKJA8DsuW-wKkMTyyCXye58rpyJw1PpgDeLFxGN7BvQkj2SslbDA8i/exec -->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache" />
+  <meta http-equiv="expires" content="-1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VNET hotspot</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="css/output.css" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff" />
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="./firebase.js"></script>
+</head>
+<!-- dst=$(link-orig-esc)&amp; -->
+
+<body 
+  class="flex justify-center items-center"
+  style="background: url('/img/bg.png') no-repeat center center; background-size: 490px;">
+  <div class="w-full max-w-lg flex flex-col py-8 justify-center items-center">
+    <div class="w-full flex flex-nowrap gap-4 items-end">
+      <div class="pb-3">
+        <img src="./img/gratis.png" alt="golazo">
+      </div>
+    </div>
+    <form class="md:min-w-[450px] min-w-[315px] rounded-lg px-8 pt-1 pb-2 mb-0 flex flex-col gap-4 items-stretch"
+      action="$(link-login-only)?username=T-$(mac-esc)" method="post" id="my-form" name="myform">
+      <div
+        class="flex mb-2 md:flex-row lg:flex-row md:gap-4 lg:gap-4 gap-2 md:items-center lg:items-center items-start text-black w-full justify-between">
+        <label class="block min-w-20 text-sm font-bold mb-2" for="nombre">
+          Nombre:
+        </label>
+        <input
+          class="shadow appearance-none border-0 rounded-3xl w-full py-0 px-1 text-black bg-white leading-tight focus:outline-none focus:shadow-outline"
+          id="nombre" type="text" placeholder="Pedro" name="nombre" required>
+      </div>
+      <div class="flex gap-4 items-center text-black w-full justify-between">
+        <label class="block min-w-20 text-sm font-bold mb-2" for="apellido">
+          Apellido:
+        </label>
+        <input
+          class="shadow appearance-none border-0 rounded-3xl w-full py-0 text-black px-1 leading-tight focus:outline-none focus:shadow-outline"
+          id="nombre" type="text" placeholder="Perez" name="apellido" required>
+      </div>
+      <div class="flex gap-4 items-center text-black w-full justify-between">
+        <label class="block min-w-20 text-sm font-bold mb-2" for="telefono">
+          Teléfono:
+        </label>
+        <input
+          class="shadow appearance-none border-0 rounded-3xl w-full py-0 px-1 text-black leading-tight focus:outline-none focus:shadow-outline"
+          id="telefono" type="text" placeholder="+58400000000" name="telefono" required>
+      </div>
+      <div class="flex gap-4 items-center text-black w-full justify-between">
+        <label class="block min-w-20 text-sm font-bold mb-2" for="correo">
+          Correo:
+        </label>
+        <input
+          class="shadow appearance-none border-1 rounded-3xl w-full py-0 px-1 text-black m-0 leading-tight focus:outline-none focus:shadow-outline"
+          id="correo" type="text" placeholder="ejemplo@mail.com" name="correo" required>
+      </div>
+      <div class="flex gap-4 items-center text-black w-full justify-between">
+        <label class="flex w-72 text-sm font-bold mb-2" for="zona">
+          Zona donde vives:
+        </label>
+        <input
+          class="shadow appearance-none border-0 rounded-3xl w-full py-0 px-1 m-0 text-black leading-tight focus:outline-none focus:shadow-outline"
+          id="zona" type="text" placeholder="p.e Chacao, edificio Chacao" name="zona" required>
+      </div>
+      <div class="flex flex-col gap-4 items-center text-black w-full justify-between">
+        <p class="block text-sm font-semibold mb-2 flex-shrink">
+          ¿Cuentas con internet por fibra óptica?
+        </p>
+        <ul class="flex w-full gap-4 justify-center">
+          <li>
+            <input type="radio" id="fibrayes" name="fibra" value="Si" class="hidden peer" required />
+            <label for="fibrayes"
+              class="flex items-center justify-center w-28 text-white bg-vnet border-4 rounded-3xl cursor-pointer peer-checked:bg-[#e6a438] peer-checked:text-black hover:text-gray-600 hover:bg-gray-100 font-semibold py-2 text-center">
+              Si
+            </label>
+          </li>
+          <li>
+            <input type="radio" id="fibrano" name="fibra" value="No" class="hidden peer">
+            <label for="fibrano"
+              class="flex items-center justify-center w-28 text-white bg-vnet border-4 rounded-3xl cursor-pointer peer-checked:bg-[#e6a438] peer-checked:text-black hover:text-gray-600 hover:bg-gray-100 font-semibold py-2 text-center">
+              No
+            </label>
+          </li>
+        </ul>
+      </div>
+      <div class="flex flex-col gap-4 items-center text-black w-full justify-between">
+        <p class="block text-sm font-semibold mb-2 flex-shrink">
+          ¿Quisieras tener internet de ultra velocidad VNET?
+        </p>
+        <ul class="flex w-full gap-4 justify-center">
+          <li>
+            <input type="radio" id="internetyes" name="internet" value="Si" class="hidden peer" required />
+            <label for="internetyes"
+              class="flex items-center justify-center w-28 text-white bg-vnet border-4 rounded-3xl cursor-pointer peer-checked:bg-[#e6a438] peer-checked:text-black hover:text-gray-600 hover:bg-gray-100 font-semibold py-2 text-center">
+              Si
+            </label>
+          </li>
+          <li>
+            <input type="radio" id="internetno" name="internet" value="No" class="hidden peer">
+            <label for="internetno"
+              class="flex items-center justify-center w-28 text-white bg-vnet border-4 rounded-3xl cursor-pointer peer-checked:bg-[#e6a438] peer-checked:text-black hover:text-gray-600 hover:bg-gray-100 font-semibold py-2 text-center">
+              No
+            </label>
+          </li>
+        </ul>
+      </div>     
+      <div class="flex items-stretch justify-center pt-4">
+        <input
+  class="bg-vnet2 bg-opacity-75 hover:bg-opacity-90 text-black py-4 px-4 focus:outline-none focus:shadow-outline w-full font-bold"
+  type="submit" value="¡Conéctate aquí!" id="submitButton">
+
+</input>
+
+      </div>
+      <input type="hidden" name="mac" value="$(mac)">
+      <input type="hidden" name="ip" value="$(ip)">
+      <input type="hidden" name="hostname" value="$(hostname)">
+      <input type="hidden" name="host" value="$(host-ip)">
+      <input type="hidden" name="username" value="$(username)">
+      <input type="hidden" name="password" value="none" />
+      <input type="hidden" name="link-login" value="$(link-login)">
+      <input type="hidden" name="origin" value="link-login-only">
+      <input type="hidden" name="link-orig" value="$(link-orig)">
+      <input type="hidden" name="hotspotId" value="UopnOifWhxFZBPF8Szee">
+      <input type="hidden" name="error" value="$(error)">
+      <p class="mt-6 hidden text-white w-full text-center">
+        $(if error == "")
+        Llena el formulario para acceder al hotspot de VNET
+        $(endif)
+
+        $(if error)$(error)$(endif)
+      </p>
+    </form>
+    <div class="flex align-top gap-4 pt-2 flex-col justify-center ">
+      <img class="w-45 h-auto mx-auto" src="./img/30-min.png" alt="VNET Links" style="width: 290px; height: auto;">
+      <a href="https://vnet.com.ve" target="_blank">
+      </a>
+    </div>
+  </div>
+  <script>
+    // import { db, addDoc, collection } from './firebase.js';
+    window.addEventListener("load", function () {
+      const form = document.getElementById('my-form');
+      const button = document.getElementById('submitButton')
+      // console.log(getDoc, addDoc, db)
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        try {
+          button.style.pointerEvents = "none";
+          button.value = "Conectando...";
+
+          const formData = new FormData(form);
+          const result = await fetch("https://script.google.com/macros/s/AKfycbyEq6RuFMomfuHJgAdTEVscut3ecPUhvlLKVVcEARYd65O0a7L8EAHtiJ8yO-7xVIV2/exec", {
+            method: "POST",
+            body: formData,
+          });
+          const data = {
+            name: formData.get('nombre'),
+            lastname: formData.get('apellido'),
+            phone: formData.get('telefono'),
+            email: formData.get('correo'),
+            zone: formData.get('zona'),
+            fiber: formData.get('fibra'),
+            internet: formData.get('internet'),
+            mac: formData.get('mac'),
+            hotspotId: formData.get('hotspotId'),
+            timestamp: Date.now(),
+          }
+          const doc = await db.collection("leads")
+            .add(data);
+          console.log(doc.id);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          button.style.pointerEvents = "auto";
+          button.value = "Conectar";
+          window.location = "$(link-login-only)?username=T-$(mac-esc)"
+        }
+      });
+    });
+  </script>
+</body>
+
+
+</html>

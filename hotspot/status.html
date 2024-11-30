@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    $(if refresh-timeout)
+    <meta http-equiv="refresh" content="$(refresh-timeout-secs)">
+    $(endif)
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="-1">
+    <title>Weconnect hotspot - Status</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        function openLogout() {
+            if (window.name != 'hotspot_status') return true;
+            open('$(link-logout)', 'hotspot_logout', 'toolbar=0,location=0,directories=0,status=0,menubars=0,resizable=1,width=280,height=250');
+            window.close();
+            return false;
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="ie-fixMinHeight">
+        <div class="main">
+            <div class="wrap">
+                <h1 class="status_title">El status de tu conexión es: </h1>
+                <b class="bold">CONECTADO</b>
+                <br>
+                <form action="$(link-logout)" name="logout" onSubmit="return openLogout()">
+                    <div class="status_table">
+                        <div class="status_nice">
+                            <h2 class="bold">CONECTADO</h2>
+                            <h4>Bytes subidos / descargados</h4>
+                            <span class="bold">$(bytes-in-nice) / $(bytes-out-nice)</span>
+                            $(if session-time-left)
+                            <h4>Tiempo conectado / Restante</h4>
+                            <span class="bold">$(uptime) / $(session-time-left)</span>
+                            $(else)
+                            <div>
+                                <span class="bold">Tiempo conectado</span>
+                                <span class="bold">$(uptime)</span>
+                            </div>
+                            $(endif)
+                        </div>
+                    </div>
+                    <input type="submit" value="Cerrar sesión">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<!-- $(if login-by-mac != 'yes') -->
+<!-- user manager link. if user manager resides on other router, replace $(hostname) by its address
+                    <button onclick="document.location='http://$(hostname)/user?subs='; return false;">status</button>
+                     end of user manager link -->
+<!-- $(endif) -->
